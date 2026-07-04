@@ -14,7 +14,7 @@ Python framework for developing and evaluating regression models using patient-l
 Clone the repository and install the required dependencies:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/nested-cv-regressor.git
+git clone https://github.com/OmidMehdizadehD/nested-cv-regressor.git
 cd nested-cv-regressor
 pip install -r requirements.txt
 ```
