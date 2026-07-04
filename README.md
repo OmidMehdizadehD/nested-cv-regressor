@@ -11,33 +11,36 @@ Python framework for developing and evaluating regression models using patient-l
 
 ## Installation
 
-Clone the repository and install the dependencies:
+Clone the repository and install the required dependencies:
+
 ```bash
 git clone https://github.com/YOUR_USERNAME/nested-cv-regressor.git
 cd nested-cv-regressor
 pip install -r requirements.txt
+```
+
+## Quick Start: Synthetic Data
+
+You do not need real patient data to test the framework. First, generate a synthetic clinical dataset:
+
 ```bash
-## Quick Start (Synthetic Data)
-
-You don't need real patient data to test the framework. First, generate a synthetic clinical dataset:
-bash
 python generate_synthetic_data.py
+```
 
-Then, run the pipeline on the synthetic dataset:
-bash
+Then run the pipeline on the synthetic dataset:
+
+```bash
 python main.py --data synthetic_dataset.csv --target RPImax --scaling robust --selection rfecv_rf
+```
 
-## Command Line Arguments
+## Command-Line Arguments
 
-* `--data` : Path to your dataset (CSV or Excel). *Required*.
-* `--target` : The target column to predict (Default: `RPImax`).
-* `--scaling` : Feature scaling method. Options: `standard`, `robust`, `minmax`, `maxabs`, `power`, `quantile` (Default: `robust`).
-* `--selection`: Feature selection algorithm. Options: `mutual_info`, `rfe_rf`, `rfecv_rf`, `lasso` (Default: `rfecv_rf`).
-* `--outdir` : Directory to save plots and CSV metrics (Default: `results`).
-* `--no-outliers` : Flag to disable the `OneClassSVM` outlier removal step entirely. Use this if physiological extremes hold critical predictive variance.
-* `--contamination` : Float representing the expected proportion of outliers for the `OneClassSVM`. (Default: `$0.01$`).
-
-
+* `--data`: Path to your dataset in CSV or Excel format. **Required**.
+* `--target`: Target column to predict. Default: `RPImax`.
+* `--scaling`: Feature-scaling method. Options: `standard`, `robust`, `minmax`, `maxabs`, `power`, `quantile`. Default: `robust`.
+* `--selection`: Feature-selection algorithm. Options: `mutual_info`, `rfe_rf`, `rfecv_rf`, `lasso`. Default: `rfecv_rf`.
+* `--outdir`: Directory for plots and CSV metrics. Default: `results`.
+* `--no-outliers`: Disables the `OneClassSVM` outlier-removal step. Use this when physiological extremes may contain meaningful predictive variance.
+* `--contamination`: Expected proportion of outliers used by `OneClassSVM`. Default: `0.01`.
 
 ---
-
