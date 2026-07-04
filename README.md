@@ -7,7 +7,7 @@ Python framework for developing and evaluating regression models using patient-l
 * **Leakage-Free Preprocessing:** Standardizers, feature selectors, and outlier detection (`OneClassSVM`) are strictly placed *inside* the pipeline, ensuring they are fit exclusively on training folds during cross-validation.
 * **Nested Cross-Validation:** Uses a $10$-fold outer loop for unbiased evaluation and a $3$-fold inner loop for randomized hyperparameter tuning.
 * **Feature Selection Methods:** Includes Recursive Feature Elimination (RFECV, RFE), Mutual Information, and LASSO. Automatically exports the selected variables to CSV.
-* **Robust Evaluation Metrics:** Calculates bootstrap $95\%$ confidence intervals for $MAE$ and $R^2$ on the independent test set.
+* **Robust Evaluation Metrics:** Calculates bootstrap $95\%$ confidence intervals for $MAE$ and $R^2$ on the held-out test set.
 
 ## Installation
 
