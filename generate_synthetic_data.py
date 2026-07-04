@@ -14,7 +14,7 @@ def generate_data(n_patients=$50$, n_records_per_patient=$3$, n_features=$24$):
             
             # Generate a synthetic target with some correlation to the first few features
             target = ($2.5$ * record['Feature_1']) - ($1.2$ * record['Feature_2']) + np.random.normal($0$, $0.5$)
-            record['RPImax'] = target
+            record['T'] = target
             
             data.append(record)
             
