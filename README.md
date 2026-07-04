@@ -16,7 +16,7 @@ Clone the repository and install the dependencies:
 git clone https://github.com/YOUR_USERNAME/nested-cv-regressor.git
 cd nested-cv-regressor
 pip install -r requirements.txt
-
+```bash
 ## Quick Start (Synthetic Data)
 
 You don't need real patient data to test the framework. First, generate a synthetic clinical dataset:
@@ -41,12 +41,3 @@ python main.py --data synthetic_dataset.csv --target RPImax --scaling robust --s
 
 ---
 
-### Step 3: Publish to GitHub
-
-1. **Initialize Git local repository:**
-   Open your terminal/command prompt, navigate to the `nested-cv-regressor` folder, and type:
-   
-```bash
-   git init
-   git add .
-   git commit -m "Initial commit: Regression framework"
