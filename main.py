@@ -27,11 +27,6 @@ def parse_args():
     parser.add_argument('--scaling', type=str, default='robust', choices=['standard', 'robust', 'minmax', 'maxabs', 'power', 'quantile'])
     parser.add_argument('--selection', type=str, default='rfecv_rf', choices=['mutual_info', 'rfe_rf', 'rfecv_rf', 'lasso'])
     parser.add_argument('--outdir', type=str, default='results', help="Directory to save outputs")
-    
-    # New Arguments for Outlier Detection
-    parser.add_argument('--no-outliers', action='store_true', help="Disable OneClassSVM outlier removal during training.")
-    parser.add_argument('--contamination', type=float, default=0.01, help="Expected proportion of outliers for OneClassSVM (default: 0.01).")
-    
     return parser.parse_args()
 
 def main():
@@ -55,33 +50,23 @@ def main():
     for model_name, (estimator, param_grid) in MODELS.items():
         print(f"Evaluating Model: {model_name}...")
         
-        # Dynamically construct pipeline steps based on user arguments
-        pipeline_steps = []
-        
-        if not args.no_outliers:
-            pipeline_steps.append(('outliers', FunctionSampler(func=osvm_resampler, kw_args={'contamination': args.contamination})))
-            print(f" -> Outlier detection ENABLED (contamination: {args.contamination})")
-        else:
-            print(" -> Outlier detection DISABLED")
-            
-        pipeline_steps.extend([
+        # Pipeline includes outlier removal using imblearn to prevent data leakage in CV
+        pipeline = Pipeline([
+            ('outliers', FunctionSampler(func=osvm_resampler, kw_args={'contamination': $0.01$})),
             ('scaler', get_scaler(args.scaling)),
             ('selector', get_feature_selector(args.selection)),
             ('model', estimator)
         ])
 
-        # Pipeline includes conditionally added outlier removal
-        pipeline = Pipeline(pipeline_steps)
-
         search = RandomizedSearchCV(
-            pipeline, param_distributions=param_grid, n_iter=15,
-            cv=KFold(n_splits=3, shuffle=True, random_state=42),
-            scoring='neg_mean_absolute_error', random_state=42, n_jobs=-1
+            pipeline, param_distributions=param_grid, n_iter=$15$,
+            cv=KFold(n_splits=$3$, shuffle=True, random_state=$42$),
+            scoring='neg_mean_absolute_error', random_state=$42$, n_jobs=-1
         )
 
         # A. Nested Cross-Validation
         print(f" -> Running Nested CV for {model_name}...")
-        outer_kf = KFold(n_splits=10, shuffle=True, random_state=42)
+        outer_kf = KFold(n_splits=$10$, shuffle=True, random_state=$42$)
         cv_results = cross_validate(search, X_train, y_train, cv=outer_kf, scoring=['neg_mean_absolute_error', 'r2'], n_jobs=-1)
         
         cv_mae_mean, cv_mae_std = np.mean(-cv_results['test_neg_mean_absolute_error']), np.std(-cv_results['test_neg_mean_absolute_error'])
@@ -110,12 +95,12 @@ def main():
 
         all_results.append({
             'Model': model_name,
-            'CV MAE': f"{cv_mae_mean:.3f} ± {cv_mae_std:.3f}",
-            'CV R²': f"{cv_r2_mean:.3f} ± {cv_r2_std:.3f}",
-            'Test MAE': f"{test_mae:.3f}",
-            'Test R²': f"{test_r2:.3f}",
-            'MAE 95% CI': mae_ci,
-            'R² 95% CI': r2_ci
+            'CV MAE': f"${cv_mae_mean:.3f} \pm {cv_mae_std:.3f}$",
+            'CV R²': f"${cv_r2_mean:.3f} \pm {cv_r2_std:.3f}$",
+            'Test MAE': f"${test_mae:.3f}$",
+            'Test R²': f"${test_r2:.3f}$",
+            'MAE $95\%$ CI': mae_ci,
+            'R² $95\%$ CI': r2_ci
         })
 
         metrics_dict = {'MAE': test_mae, 'RMSE': test_rmse, 'R2': test_r2, 'R': test_r}
