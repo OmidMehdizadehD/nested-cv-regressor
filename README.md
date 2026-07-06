@@ -35,12 +35,10 @@ python main.py --data synthetic_dataset.csv --target RPImax --scaling robust --s
 
 ## Command-Line Arguments
 
-* `--data`: Path to your dataset in CSV or Excel format. **Required**.
-* `--target`: Target column to predict. Default: `RPImax`.
-* `--scaling`: Feature-scaling method. Options: `standard`, `robust`, `minmax`, `maxabs`, `power`, `quantile`. Default: `robust`.
-* `--selection`: Feature-selection algorithm. Options: `mutual_info`, `rfe_rf`, `rfecv_rf`, `lasso`. Default: `rfecv_rf`.
-* `--outdir`: Directory for plots and CSV metrics. Default: `results`.
-* `--no-outliers`: Disables the `OneClassSVM` outlier-removal step. Use this when physiological extremes may contain meaningful predictive variance.
-* `--contamination`: Expected proportion of outliers used by `OneClassSVM`. Default: `0.01`.
+* `--data` : Path to your dataset (CSV or Excel). *Required*.
+* `--target` : The target column to predict (Default: `RPImax`).
+* `--scaling` : Feature scaling method. Options: `standard`, `robust`, `minmax`, `maxabs`, `power`, `quantile` (Default: `robust`).
+* `--selection`: Feature selection algorithm. Options: `mutual_info`, `rfe_rf`, `rfecv_rf`, `lasso` (Default: `rfecv_rf`).
+* `--outdir` : Directory to save plots and CSV metrics (Default: `results`).
 
 ---
